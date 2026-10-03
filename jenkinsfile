@@ -36,7 +36,7 @@ pipeline {
         stage("Artifacts to S3") {
             steps {
                 sh '''
-                    aws s3 cp target/*.war s3://krushna.online123123/Artifacts/student.war
+                    aws s3 cp target/*.war s3://krushna.online.123123/Artifacts/student.war
                 '''
             }
         }
