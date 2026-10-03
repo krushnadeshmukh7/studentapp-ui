@@ -36,13 +36,12 @@
       <!-- WAR Packaging -->
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
-        <version>2.6</version>
+        <version>3.4.0</version>
         <configuration>
           <warSourceDirectory>WebContent</warSourceDirectory>
           <failOnMissingWebXml>false</failOnMissingWebXml>
         </configuration>
       </plugin>
-
       <!-- SonarQube Scanner -->
       <plugin>
         <groupId>org.sonarsource.scanner.maven</groupId>
