@@ -78,7 +78,7 @@ pipeline {
         stage('Deployment on k8s'){
             steps{
                 sh '''
-                    aws eks update-kubeconfig --name my-cluster-krushna --region us-east-2
+                    aws eks update-kubeconfig --name my-cluster-krushna --region us-west-2
                     kubectl apply -f k8s/
                     kubectl get pods
                     sleep 20
