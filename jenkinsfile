@@ -8,21 +8,31 @@ pipeline {
     }
 
     stages {
-        stage ("checkout") {
+
+        stage("Checkout") {
             steps {
                 git 'https://github.com/krushnadeshmukh7/studentapp-ui.git'
-                echo "clonning is successful"
+                echo "Cloning is successful"
             }
         }
 
-        stage ("build") {
+        stage("Build") {
             steps {
                 sh 'mvn clean package'
             }
+
             post {
                 always {
                     archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
                 }
+            }
+        }
+
+        stage("Artifacts to S3") {
+            steps {
+                sh '''
+                    aws s3 cp target/*.war s3://krushna.online123123/Artifacts/student.war
+                '''
             }
         }
     }
