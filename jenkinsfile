@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage ("checkout") {
             steps {
-                git https://github.com/krushnadeshmukh7/studentapp-ui.git
+                git 'https://github.com/krushnadeshmukh7/studentapp-ui.git'
                 echo "clonning is successful"
             }
         }
