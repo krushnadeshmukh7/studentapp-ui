@@ -75,6 +75,20 @@ pipeline {
             }
         }
 
+        stage('Deployment on k8s'){
+            steps{
+                sh '''
+                    aws eks update-kubeconfig --name my-cluster-krushna --region us-east-2
+                    kubectl apply -f k8s/
+                    kubectl get pods
+                    sleep 20
+                    kubectl get pods
+                    kubectl get svc -o wide
+                '''
+            }
+        }
+
+
 
     }
 }

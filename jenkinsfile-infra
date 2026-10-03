@@ -14,7 +14,7 @@ pipeline {
     stages{
         stage('Checkout'){
             steps{
-                git 'https://github.com/mayurpandit25/studentapp-ui.git'
+                git 'https://github.com/krushnadeshmukh7/studentapp-ui.git'
             }
         }
 
