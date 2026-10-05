@@ -27,5 +27,12 @@ pipeline {
                 }
             }
         }
+        stage('Artifacts to s3') {
+            steps{
+                ssh '''
+                  aws s3 cp target/*.war s3://krushna.online123123/Artifacts/stuent.war
+                  '''
+            }
+        }
     }
 }
