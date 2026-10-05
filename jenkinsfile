@@ -1,94 +1,27 @@
 pipeline {
     agent {
-        label "worker"
+        lable "worker"
     }
-
     tools {
         maven 'maven'
     }
-    
-    environment {
-        my_aws_cred = credentials('aws-cred')
-    }
-
-
     stages {
-
-        stage("Checkout") {
-            steps {
+        stage ("checkout") {
+            steps{
                 git 'https://github.com/krushnadeshmukh7/studentapp-ui.git'
-                echo "Cloning is successful"
+                echo "clonning is sucessful"
             }
         }
-
         stage("Build") {
-            steps {
+            steps{
                 sh 'mvn clean package'
             }
-
-            post {
-                always {
-                    archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
+            post{
+                success{
+                    archiArtifacts artifacts: '**/target/*.war',fingerprint: true
                 }
             }
         }
-
-        stage("Artifacts to S3") {
-            steps {
-                sh '''
-                    aws s3 cp target/*.war s3://krushna.online.123123/Artifacts/student.war
-                '''
-            }
-        }
-
-        stage ('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('sonar') {
-                    sh 'mvn sonar:sonar'
-                }
-            }
-        }
-
-        stage('Quality Gates') {
-            steps {
-                timeout (time: 5 ,unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
-                }
-            }
-        }
-
-        stage('Docker Build') {
-            steps {
-                sh '''
-                  docker build -t student .
-                  docker images
-                '''
-            }
-        }
-         stage('Push image to ECR'){
-            steps {
-                sh '''
-                  aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 267850879086.dkr.ecr.us-west-2.amazonaws.com
-                  docker tag student:latest 267850879086.dkr.ecr.us-west-2.amazonaws.com/student:latest
-                  docker push 267850879086.dkr.ecr.us-west-2.amazonaws.com/student:latest
-                '''
-            }
-        }
-
-        stage('Deployment on k8s'){
-            steps{
-                sh '''
-                    aws eks update-kubeconfig --name my-cluster-krushna --region us-west-2
-                    kubectl apply -f k8s/
-                    kubectl get pods
-                    sleep 20
-                    kubectl get pods
-                    kubectl get svc -o wide
-                '''
-            }
-        }
-
-
-
     }
+
 }
