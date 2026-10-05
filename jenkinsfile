@@ -1,27 +1,31 @@
 pipeline {
     agent {
-        lable "worker"
+        label 'worker'
     }
+
     tools {
         maven 'maven'
     }
+
     stages {
-        stage ("checkout") {
-            steps{
+
+        stage('Checkout') {
+            steps {
                 git 'https://github.com/krushnadeshmukh7/studentapp-ui.git'
-                echo "clonning is sucessful"
+                echo 'Cloning is successful'
             }
         }
-        stage("Build") {
-            steps{
+
+        stage('Build') {
+            steps {
                 sh 'mvn clean package'
             }
-            post{
-                success{
-                    archiArtifacts artifacts: '**/target/*.war',fingerprint: true
+
+            post {
+                success {
+                    archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
                 }
             }
         }
     }
-
 }
