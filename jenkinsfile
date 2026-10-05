@@ -6,6 +6,10 @@ pipeline {
     tools {
         maven 'maven'
     }
+     environment{
+        MY_AWS_CRED = credentials('aws-cred')
+    }
+
 
     stages {
 
