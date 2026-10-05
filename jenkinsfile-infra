@@ -44,7 +44,7 @@ pipeline {
             echo 'Infrastructure deployment successful!'
             echo 'Starting student-ui job...'
 
-            build job: 'student-ui', wait: true
+            build job: 'student-ui', wait: false
         }
 
         failure {
