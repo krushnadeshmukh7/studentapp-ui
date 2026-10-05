@@ -6,10 +6,10 @@ pipeline {
     tools {
         maven 'maven'
     }
-     environment{
+
+    environment {
         MY_AWS_CRED = credentials('aws-cred')
     }
-
 
     stages {
 
@@ -37,6 +37,22 @@ pipeline {
                 sh '''
                     aws s3 cp target/*.war s3://krushna.online123123/Artifacts/student.war
                 '''
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sonar') {
+                    sh 'mvn sonar:sonar'
+                }
+            }
+        }
+
+        stage('Quality Gates') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
             }
         }
     }
