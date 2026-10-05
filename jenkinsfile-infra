@@ -1,0 +1,35 @@
+pipeline {
+    agent {
+        label 'worker'
+    }
+    environment {
+        MY_AWS_CRED = credentials('aws-cred')
+    }
+    tools {
+        terraform 'terraform'
+    }
+    
+    stages {
+        stage ('checkout') {
+            steps {
+                git 'https://github.com/krushnadeshmukh7/studentapp-ui.git'
+                echo 'Cloning is successful'
+            }
+        }
+        stage ('terraform -Init') {
+            steps{
+                sh 'terraform init'
+            }
+        }
+        stage ('terraform -validate') {
+            steps{
+                sh 'terraform validate'
+            }
+        }
+        stage ('terraform - Apply') {
+            steps {
+                sh 'terraform -Apply -auto-approve'
+            }
+        }
+     }
+}
